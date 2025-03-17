@@ -20,7 +20,8 @@ type Movie struct {
 
 type Showtime struct {
 	gorm.Model
-	Movie Movie
+	MovieID uint
+	Movie Movie `gorm:"foreignKey:MovieID"`
 	Date string
 	Time string
 	Seats int
@@ -29,8 +30,10 @@ type Showtime struct {
 
 type Reservation struct {
 	gorm.Model
-	User User
-	Showtimes Showtime
+	UserID    uint    // Foreign key
+	User      User    `gorm:"foreignKey:UserID"`
+	ShowtimeID uint   // Foreign key
+	Showtime  Showtime `gorm:"foreignKey:ShowtimeID"`
 	Seat_number int
 	Status string // pending, confirmed, cancelled
 }
