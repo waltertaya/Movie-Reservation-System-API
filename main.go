@@ -9,6 +9,7 @@ import (
 
 func init() {
 	initialisation.LoadEnv()
+	initialisation.ConnectDB()
 }
 
 
