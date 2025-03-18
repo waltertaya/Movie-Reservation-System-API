@@ -28,5 +28,24 @@ func main() {
 	// promote: USER to ADMIN
 	router.PUT("/api/v1/auth/promote/:id", controller.PromoteUser)
 
+	// Movies
+	router.POST("/api/v1/movies", controller.CreateMovie)
+	router.GET("/api/v1/movies", controller.GetMovies)
+	router.GET("/api/v1/movies/:id", controller.GetMovie)
+	router.PUT("/api/v1/movies/:id", controller.UpdateMovie)
+	router.DELETE("/api/v1/movies/:id", controller.DeleteMovie)
+
+	// Showtimes
+	router.POST("/api/v1/showtimes", controller.CreateShowtime)
+	router.GET("/api/v1/showtimes", controller.GetShowtimes)
+	router.GET("/api/v1/showtimes/:id", controller.GetShowtime)
+	router.PUT("/api/v1/showtimes/:id", controller.UpdateShowtime)
+	router.DELETE("/api/v1/showtimes/:id", controller.DeleteShowtime)
+
+	// Reservations
+	router.POST("/api/v1/reservations", controller.CreateReservation)
+	router.GET("/api/v1/reservations", controller.GetReservations)
+	router.DELETE("/api/v1/reservations/:id", controller.CancelReservation)
+
 	router.Run()
 }

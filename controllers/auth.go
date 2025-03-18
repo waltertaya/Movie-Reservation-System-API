@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/waltertaya/Movie-Reservation-System-API/initialisation"
@@ -59,9 +60,20 @@ func UserRegistration(ctx *gin.Context) {
 		})
 		return
 	}
-	ctx.JSON(201, gin.H{
-		"message": "User creaed successfully",
+	api_key := os.Getenv("USER_API_KEY")
+
+	if *user.Role == "ADMIN" {
+		api_key = os.Getenv("ADMIN_API_KEY")
+	}
+
+	user.Password = nil
+	user.Role = nil
+	user.ID = 0
+
+	ctx.JSON(200, gin.H{
+		"message": "User logged in successfully",
 		"user": user,
+		"api_key": api_key,
 	})
 }
 
@@ -92,8 +104,19 @@ func UserLogin(ctx *gin.Context) {
 		return
 	}
 
+	api_key := os.Getenv("USER_API_KEY")
+
+	if *user.Role == "ADMIN" {
+		api_key = os.Getenv("ADMIN_API_KEY")
+	}
+
+	user.Password = nil
+	user.Role = nil
+	user.ID = 0
+
 	ctx.JSON(200, gin.H{
 		"message": "User logged in successfully",
 		"user": user,
+		"api_key": api_key,
 	})
 }
