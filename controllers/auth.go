@@ -65,49 +65,6 @@ func UserRegistration(ctx *gin.Context) {
 	})
 }
 
-func AdminRegistration(ctx *gin.Context) {
-	var body struct {
-		First_name string
-		Last_name string
-		Email string
-		Password string
-		Phone string
-	}
-
-	ctx.Bind(&body)
-
-	admin := models.User{
-		First_name: &body.First_name,
-		Last_name: &body.Last_name,
-		Email: &body.Email,
-		Password: func(s string) *string { return &s }(HashPassword(body.Password)),
-		Role: func(s string) *string { return &s }("ADMIN"),
-		Phone: &body.Phone,
-	}
-
-	user_exist := initialisation.DB.Where("email = ?", body.Email).First(&admin)
-
-	if user_exist.RowsAffected > 0 {
-		ctx.JSON(500, gin.H{
-			"error": "Admin already exists",
-		})
-		return
-	}
-
-	result := initialisation.DB.Create(&admin)
-	if result.Error != nil {
-		log.Fatal("Error creating the admin, ", result.Error)
-		ctx.JSON(500, gin.H{
-			"error": "Error creating the admin",
-		})
-		return
-	}
-	ctx.JSON(201, gin.H{
-		"message": "Admin creaed successfully",
-		"admin": admin,
-	})
-}
-
 func UserLogin(ctx *gin.Context) {
 	var body struct {
 		Email string
